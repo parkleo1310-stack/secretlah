@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <title>Will you forgive me?</title>
+    <style>
+        body {
+            margin: 0; padding: 0; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #f0f0f0; overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Gambar meme - Halimunan pada permulaan */
+        .meme-bg {
+            position: absolute; z-index: 1;
+            width: 150px; border: 2px solid #000;
+            display: none;
+        }
+
+        .container {
+            position: relative; z-index: 10;
+            text-align: center; background: white;
+            padding: 40px; border-radius: 15px;
+            box-shadow: 8px 8px 0px #000; border: 3px solid #000;
+            min-width: 320px;
+        }
+
+        /* Susunan butang bagi seimbang */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 30px; font-size: 1.2rem; cursor: pointer;
+            border: 2px solid #000; background: white;
+            box-shadow: 4px 4px 0px #000;
+            position: relative; /* Bagi dia duduk diam dulu */
+        }
+
+        .no-btn {
+            border: 2px solid red;
+            box-shadow: 4px 4px 0px red;
+            color: red;
+        }
+
+        /* Skrin Video Akhir */
+        #videoScreen {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: white;
+            z-index: 100; justify-content: center; align-items: center;
+            flex-direction: column;
+        }
+        video { width: 85%; max-width: 400px; border-radius: 15px; border: 3px solid #000; }
+    </style>
+</head>
+<body>
+
+    <img src="https://i.pinimg.com/736x/91/21/4a/91214a641f211d7aa86120d5bb8d6aa2.jpg" style="top:10%; left:10%;" class="meme-bg">
+    <img src="https://i.pinimg.com/736x/ef/12/20/ef1220c02cb5241671760e6ec51459b5.jpg" style="top:15%; right:15%;" class="meme-bg">
+    <img src="https://i.pinimg.com/736x/bf/af/fd/bfaffd0a9d5f074ce71ab893f9580392.jpg" style="bottom:20%; left:15%;" class="meme-bg">
+
+    <div class="container" id="mainBox">
+        <h1>HI JHONNNN!</h1>
+        <p>will you forgive me?</p>
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="mainNo" class="no-btn">No</button>
+        </div>
+    </div>
+
+    <div id="videoScreen">
+        <video id="myVideo" controls playsinline autoplay muted>
+            <source src="../Downloads/sulking (1).mp4" type="video/mp4">
+        </video>
+        <h2 style="margin-top: 20px;">AWW THANK YOU! 💐</h2>
+    </div>
+
+    <script>
+        const mainNo = document.getElementById('mainNo');
+        const yesBtn = document.getElementById('yesBtn');
+        const memes = document.querySelectorAll('.meme-bg');
+        const videoScreen = document.getElementById('videoScreen');
+        const myVideo = document.getElementById('myVideo');
+
+        function lari(btn) {
+            btn.style.position = 'absolute'; // Mula lari bila fungsi dipanggil
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function hantarNoBaru() {
+            const btnBaru = document.createElement('button');
+            btnBaru.innerText = "No";
+            btnBaru.className = "no-btn";
+            btnBaru.style.position = 'absolute';
+            document.body.appendChild(btnBaru);
+            lari(btnBaru);
+            btnBaru.onmouseover = function() { lari(this); hantarNoBaru(); };
+        }
+
+        // Mula gerak HANYA bila No diklik kali pertama
+        mainNo.onclick = function() {
+            memes.forEach(img => img.style.display = "block");
+            lari(this);
+            // Selepas klik pertama, butang akan lari bila mouse lalu (onmouseover)
+            this.onmouseover = function() { lari(this); hantarNoBaru(); };
+            hantarNoBaru();
+        };
+
+        yesBtn.onclick = function() {
+            videoScreen.style.display = "flex";
+            myVideo.play();
+        };
+    </script>
+</body>
+</html>
